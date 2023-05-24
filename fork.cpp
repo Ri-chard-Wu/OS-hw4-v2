@@ -1,10 +1,7 @@
 #include "fork.hpp"
-
 #include <cassert>
 
-
 using namespace std;
-// using namespace std::chrono;
 
 Fork::Fork(int id): id(id) {
     // TODO: implement fork constructor (value, mutex, cond)
@@ -13,35 +10,8 @@ Fork::Fork(int id): id(id) {
     pthread_cond_init(&cond, NULL);
     value = 1;
 
-    logger.add_meta(ll2str(1));
+    logger.add_meta(ll2str(value));
 }
-
-
-
-
-
-// void Fork::add_log(string msg){
-//     msg = ll2str(get_time()) + ", " + msg;
-//     log_array.push_back(msg);
-// }
-
-
-
-// void Fork::write_log(){
-
-//     char buf[20];
-//     sprintf(buf, "Fork-%d.log", id);
-//     ofstream out(buf);
-
-//     // out << "Meta:\n";
-//     out << "1\n";
-
-//     // out << "Body:\n";
-//     for(int i = 0; i < log_array.size(); i++){
-//         out << log_array[i] << "\n";
-//     }
-//     out.close();
-// }
 
 
 

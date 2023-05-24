@@ -104,12 +104,12 @@ void Philosopher::putdown() {
 
 void Philosopher::enter() {
     // TODO: implement the enter interface, the philosopher needs to join the table first
-    table->wait();
+    table->wait(id);
 }
 
 void Philosopher::leave() {
     // TODO: implement the leave interface, the philosopher needs to let the table know that he has left
-    table->signal();
+    table->signal(id);
 }
 
 

@@ -4,7 +4,7 @@ import os
 
 
 
-def verify_Fork(filename):
+def verify_Resource(filename):
     print(f"verifying {filename} ...", end =" ")
 
     res_name = filename.split(".")[0]
@@ -118,6 +118,10 @@ def verify_Fork(filename):
 
     print("ok")
 
+
+
+
+
 fileName_dict = {"Fork":[], "Table": []}
 
 for file in os.listdir("./"):
@@ -130,7 +134,8 @@ for file in os.listdir("./"):
               
 
 for filename in fileName_dict["Fork"]:
-    verify_Fork(filename)
+    verify_Resource(filename)
 
 
-
+for filename in fileName_dict["Table"]:
+    verify_Resource(filename)

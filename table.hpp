@@ -3,11 +3,13 @@
 
 #include <pthread.h>
 
+#include "utils.hpp"
+
 class Table {
 public:
     Table(int n);
-    void wait();
-    void signal();
+    void wait(int phr_id);
+    void signal(int phr_id);
     ~Table();
 
 
@@ -16,6 +18,8 @@ private:
     pthread_cond_t cond;
     int value;
 
+    int id;
+    Logger logger;    
 };
 
 

@@ -3,11 +3,6 @@
 #include <pthread.h>
 #include <iostream>
 
-
-#include <vector>
-#include <fstream>
-#include <sys/time.h>
-
 #include "utils.hpp"
 
 using namespace std;
@@ -22,16 +17,12 @@ public:
     void signal(int phr_id); 
     ~Fork();
 
-    // void add_log(string s);
-    // void write_log();
-
 private:
     pthread_mutex_t mutex;
     pthread_cond_t cond;
     int value;
 
     int id;
-    // vector<string> log_array;
     Logger logger;
 };
 
