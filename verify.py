@@ -112,6 +112,9 @@ def verify_Fork(filename):
                 print(f"n_res not correct.")
                 exit()  
 
+        else:
+            print("invalid state")
+            exit()  
 
     print("ok")
 

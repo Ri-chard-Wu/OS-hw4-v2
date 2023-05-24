@@ -15,6 +15,7 @@ clear
 make clean
 make
 ./main
+python3 verify.py
 
 
 

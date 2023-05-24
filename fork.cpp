@@ -1,8 +1,7 @@
 #include "fork.hpp"
+
 #include <cassert>
 
-#include <sys/time.h>
-#include <fstream>
 
 using namespace std;
 // using namespace std::chrono;
@@ -12,57 +11,37 @@ Fork::Fork(int id): id(id) {
 
     pthread_mutex_init(&mutex, NULL);
     pthread_cond_init(&cond, NULL);
-
     value = 1;
+
+    logger.add_meta(ll2str(1));
 }
 
 
-// long long get_time(){
-//     return (long long)(duration_cast<milliseconds>(\
-//             std::chrono::system_clock::now().time_since_epoch()).count());
+
+
+
+// void Fork::add_log(string msg){
+//     msg = ll2str(get_time()) + ", " + msg;
+//     log_array.push_back(msg);
 // }
 
 
 
-long long get_time(void) {
-    struct timeval tv;
+// void Fork::write_log(){
 
-    gettimeofday(&tv,NULL);
-    return (((long long)tv.tv_sec)*1000)+(tv.tv_usec/1000);
-}
+//     char buf[20];
+//     sprintf(buf, "Fork-%d.log", id);
+//     ofstream out(buf);
 
+//     // out << "Meta:\n";
+//     out << "1\n";
 
-
-
-string ll2str(long long n){
-    char buf[20];
-    sprintf(buf, "%lld", n);
-    return ((string)buf);
-}
-
-
-void Fork::add_log(string msg){
-    msg = ll2str(get_time()) + ", " + msg;
-    log_array.push_back(msg);
-}
-
-
-
-void Fork::write_log(){
-
-    char buf[20];
-    sprintf(buf, "Fork-%d.log", id);
-    ofstream out(buf);
-
-    // out << "Meta:\n";
-    out << "1\n";
-
-    // out << "Body:\n";
-    for(int i = 0; i < log_array.size(); i++){
-        out << log_array[i] << "\n";
-    }
-    out.close();
-}
+//     // out << "Body:\n";
+//     for(int i = 0; i < log_array.size(); i++){
+//         out << log_array[i] << "\n";
+//     }
+//     out.close();
+// }
 
 
 
@@ -72,7 +51,7 @@ void Fork::wait(int phr_id) {
     pthread_mutex_lock(&mutex);
 
     while(value == 0) {
-        add_log(ll2str(phr_id) + ", WAIT_ON_RESOURCE" + ", " + ll2str(value));
+        logger.add_log(ll2str(phr_id) + ", WAIT_ON_RESOURCE" + ", " + ll2str(value));
 
         pthread_cond_wait(&cond, &mutex);
 
@@ -82,7 +61,7 @@ void Fork::wait(int phr_id) {
     
     assert(value >= 0);
 
-    add_log(ll2str(phr_id) + ", ACQUIRED_RESOURCE" + ", " + ll2str(value));
+    logger.add_log(ll2str(phr_id) + ", ACQUIRED_RESOURCE" + ", " + ll2str(value));
     pthread_mutex_unlock(&mutex);
 }
 
@@ -94,14 +73,18 @@ void Fork::signal(int phr_id) {
     
     pthread_cond_signal(&cond);
 
-    add_log(ll2str(phr_id) + ", RELEASED_RESOURCE" + ", " + ll2str(value));
+    logger.add_log(ll2str(phr_id) + ", RELEASED_RESOURCE" + ", " + ll2str(value));
 
     pthread_mutex_unlock(&mutex);
 }
 
 Fork::~Fork() {
     // TODO: implement fork destructor (mutex, cond)
-    write_log();
+
+    char buf[20];
+    sprintf(buf, "Fork-%d.log", id);
+    logger.write_log(buf);
+
     pthread_mutex_destroy(&mutex);
     pthread_cond_destroy(&cond);
 }
