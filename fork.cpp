@@ -54,10 +54,10 @@ void Fork::write_log(){
     sprintf(buf, "Fork-%d.log", id);
     ofstream out(buf);
 
-    out << "Meta:\n";
-    out << "n_resource 1\n";
+    // out << "Meta:\n";
+    out << "1\n";
 
-    out << "Body:\n";
+    // out << "Body:\n";
     for(int i = 0; i < log_array.size(); i++){
         out << log_array[i] << "\n";
     }
@@ -72,7 +72,7 @@ void Fork::wait(int phr_id) {
     pthread_mutex_lock(&mutex);
 
     while(value == 0) {
-        add_log(ll2str(phr_id) + ", WAIT_ON_RESOURCE");
+        add_log(ll2str(phr_id) + ", WAIT_ON_RESOURCE" + ", " + ll2str(value));
 
         pthread_cond_wait(&cond, &mutex);
 
@@ -82,7 +82,7 @@ void Fork::wait(int phr_id) {
     
     assert(value >= 0);
 
-    add_log(ll2str(phr_id) + ", ACQUIRED_RESOURCE");
+    add_log(ll2str(phr_id) + ", ACQUIRED_RESOURCE" + ", " + ll2str(value));
     pthread_mutex_unlock(&mutex);
 }
 
@@ -94,7 +94,7 @@ void Fork::signal(int phr_id) {
     
     pthread_cond_signal(&cond);
 
-    add_log(ll2str(phr_id) + ", RELEASED_RESOURCE");
+    add_log(ll2str(phr_id) + ", RELEASED_RESOURCE" + ", " + ll2str(value));
 
     pthread_mutex_unlock(&mutex);
 }

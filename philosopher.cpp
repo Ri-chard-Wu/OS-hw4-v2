@@ -65,8 +65,8 @@ string int2string(int n){
 void Philosopher::think() {
     int thinkTime = rand() % (MAXTHINKTIME - MINTHINKTIME) + MINTHINKTIME;
 
-    string s = "think-" + int2string(thinkTime) + "_sec";
-    col_print(s, id, COL_WIDTH, PHILOSOPHERS);
+    // string s = "think-" + int2string(thinkTime) + "_sec";
+    // col_print(s, id, COL_WIDTH, PHILOSOPHERS);
 
     sleep(thinkTime);
 }
@@ -78,12 +78,7 @@ void Philosopher::eat() {
 
     pickup();
 
-    // char s[COL_WIDTH];
-    // sprintf(s, "eat\n"); 
-    // col_print(s, id, COL_WIDTH, PHILOSOPHERS);
-
-    
-    col_print((string)"eat", id, COL_WIDTH, PHILOSOPHERS);
+    // col_print((string)"eat", id, COL_WIDTH, PHILOSOPHERS);
 
     sleep(EATTIME);
 
