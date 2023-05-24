@@ -2,23 +2,28 @@
 #define FORK_HPP
 
 #include <pthread.h>
+#include <iostream>
 
+#include <vector>
+#include <fstream>
+using namespace std;
 class Fork {
 public:
-    Fork();
-    void wait();
-    void signal(); 
-    int get_ticket(int *tk);
+    Fork(int id);
+    void wait(int phr_id);
+    void signal(int phr_id); 
+    
+    void add_log(string s);
+    void write_log();
+
     ~Fork();
 private:
     pthread_mutex_t mutex;
     pthread_cond_t cond;
     int value;
+    int id;
 
-    int next_tk;
-    int serv_tk;
-    int n_tk_max;
-    int n_tk_out;
+    vector<string> log_array;
 };
 
 

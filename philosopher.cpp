@@ -4,6 +4,8 @@
 
 using namespace std;
 
+
+
 Philosopher::Philosopher(int id, Fork *leftFork, Fork *rightFork, Table *table) :id(id), cancelled(false), leftFork(leftFork), rightFork(rightFork), table(table) {
     srand((unsigned) time(&t1));
 
@@ -94,15 +96,15 @@ void Philosopher::eat() {
 void Philosopher::pickup() {
     // TODO: implement the pickup interface, the philosopher needs to pick up the left fork first, then the right fork
 
-    leftFork->wait();
-    rightFork->wait();
+    leftFork->wait(id);
+    rightFork->wait(id);
 }
 
 void Philosopher::putdown() {
     // TODO: implement the putdown interface, the philosopher needs to put down the left fork first, then the right fork
 
-    leftFork->signal();
-    rightFork->signal();
+    leftFork->signal(id);
+    rightFork->signal(id);
 }
 
 void Philosopher::enter() {

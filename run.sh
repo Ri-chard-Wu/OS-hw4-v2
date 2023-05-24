@@ -1,6 +1,5 @@
 
-# # Target=test_cancel
-# Target=test_cv
+# Target=test
 
 # rm ${Target}
 
@@ -9,7 +8,26 @@
 # ./${Target}
 
 
+#=--------------------------------
+
+clear
 
 make clean
 make
 ./main
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
