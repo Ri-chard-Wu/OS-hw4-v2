@@ -1,6 +1,10 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
+#ifndef DEBUG  
+#define DEBUG
+#endif
+
 #include <iostream>
 #include <sys/time.h>
 #include <vector>

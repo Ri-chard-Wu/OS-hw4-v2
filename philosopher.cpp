@@ -28,38 +28,6 @@ int Philosopher::cancel() {
     pthread_cancel(t);
 }
 
-#define COL_WIDTH 15
-
-
-void col_print(string s, int col_id, int w, int n_col){
-
-    string s_out = "";
-    
-    for(int i = 0; i < col_id; i++){
-        s_out += "|";
-        s_out.append(w - 1, ' ');
-    }
-    
-    int len_i = s_out.length();
-    s_out += "|";
-    s_out += s;
-    int diff = s_out.length() - len_i;
-    s_out.append(w - diff, ' ');
-
-    for(int i = col_id + 1; i < n_col; i++){
-        s_out += "|";
-        s_out.append(w - 1, ' ');
-    }
-    
-    s_out += "\n";
-    cout << s_out;
-}
-
-string int2string(int n){
-    char buf[10];
-    sprintf(buf, "%d", n);
-    return ((string)buf);
-}
 
 
 void Philosopher::think() {
@@ -78,8 +46,6 @@ void Philosopher::eat() {
 
     pickup(id);
 
-    // col_print((string)"eat", id, COL_WIDTH, PHILOSOPHERS);
-
     sleep(EATTIME);
 
     putdown(id);
@@ -91,25 +57,52 @@ void Philosopher::eat() {
 void Philosopher::pickup(int id) {
     // TODO: implement the pickup interface, the philosopher needs to pick up the left fork first, then the right fork
 
-    leftFork->wait(id);
-    rightFork->wait(id);
+    leftFork->wait(
+#ifdef DEBUG        
+        id
+#endif
+        );
+
+
+    rightFork->wait(
+#ifdef DEBUG        
+        id
+#endif
+        );
 }
 
 void Philosopher::putdown(int id) {
     // TODO: implement the putdown interface, the philosopher needs to put down the left fork first, then the right fork
 
-    leftFork->signal(id);
-    rightFork->signal(id);
+    leftFork->signal(
+#ifdef DEBUG        
+        id
+#endif
+        );
+        
+    rightFork->signal(
+#ifdef DEBUG        
+        id
+#endif
+        );
 }
 
 void Philosopher::enter() {
     // TODO: implement the enter interface, the philosopher needs to join the table first
-    table->wait(id);
+    table->wait(
+#ifdef DEBUG        
+        id
+#endif
+        );
 }
 
 void Philosopher::leave() {
     // TODO: implement the leave interface, the philosopher needs to let the table know that he has left
-    table->signal(id);
+    table->signal(
+#ifdef DEBUG        
+        id
+#endif
+        );
 }
 
 

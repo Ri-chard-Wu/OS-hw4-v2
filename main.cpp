@@ -14,7 +14,11 @@ int main(int argc, char** argv) {
     vector<Philosopher *> phr_array;
 
     for (int i = 0; i < PHILOSOPHERS; i++){
-        fork_array.push_back(new Fork(i));
+        fork_array.push_back(new Fork(
+#ifdef DEBUG        
+            i
+#endif
+            ));
     }
 
     for (int i = 0; i < PHILOSOPHERS; i++){

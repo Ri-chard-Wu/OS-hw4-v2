@@ -13,13 +13,14 @@ def verify_Resource(filename):
 
     log_list = []
     cur_st = {"phr_st":{}, "n_res": -1}
-    n_phr = 5
 
     with open(filename, "r") as f:
 
         # 1st line is meta data.
         for line in f: 
-            n_res = int(line.strip())
+            q = line.strip().split(' ')
+            n_res = int(q[0])
+            n_phr = int(q[1])
             break
 
 

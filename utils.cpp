@@ -55,3 +55,32 @@ void Logger::write_log(char *filename){
 }
 
 
+
+
+
+#define COL_WIDTH 15
+
+
+void col_print(string s, int col_id, int w, int n_col){
+
+    string s_out = "";
+    
+    for(int i = 0; i < col_id; i++){
+        s_out += "|";
+        s_out.append(w - 1, ' ');
+    }
+    
+    int len_i = s_out.length();
+    s_out += "|";
+    s_out += s;
+    int diff = s_out.length() - len_i;
+    s_out.append(w - diff, ' ');
+
+    for(int i = col_id + 1; i < n_col; i++){
+        s_out += "|";
+        s_out.append(w - 1, ' ');
+    }
+    
+    s_out += "\n";
+    cout << s_out;
+}

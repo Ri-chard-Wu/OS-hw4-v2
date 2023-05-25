@@ -13,6 +13,7 @@
 clear
 
 make clean
+rm *.log
 make
 ./main
 python3 verify.py
