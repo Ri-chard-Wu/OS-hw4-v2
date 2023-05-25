@@ -1,5 +1,6 @@
 #include "fork.hpp"
 #include <cassert>
+#include "config.hpp"
 
 using namespace std;
 
@@ -48,6 +49,7 @@ void Fork::signal(int phr_id) {
     pthread_mutex_unlock(&mutex);
 }
 
+
 Fork::~Fork() {
     // TODO: implement fork destructor (mutex, cond)
 
@@ -58,3 +60,54 @@ Fork::~Fork() {
     pthread_mutex_destroy(&mutex);
     pthread_cond_destroy(&cond);
 }
+
+
+
+
+
+class Fork_Fair: public Fork{
+public:
+
+    Fork_Fair(): Fork(){
+
+        pthread_mutex_init(&mutex_tk, NULL);
+        pthread_cond_init(&cond_tk, NULL);
+
+
+        next_tk = 0;
+        serv_tk = 0;  
+        n_tk_out = 0;
+    }
+    
+
+    void get_ticket(int *tk){
+
+        pthread_mutex_lock(&mutex_tk);
+    
+        *tk = next_tk;
+        next_tk = (next_tk + 1) % n_tk_max;
+        n_tk_out++;
+
+        pthread_mutex_unlock(&mutex_tk);
+    }
+
+
+    void wait(int phr_id){
+
+        get_ticket();
+        Fork::wait(phr_id);
+
+    }
+
+    ~Fork_Fair(){
+
+    }
+
+private:
+    pthread_mutex_t mutex_tk;
+    pthread_cond_t cond_tk;
+    int next_tk;
+    int serv_tk;
+    int n_tk_max;
+    int n_tk_out;    
+};

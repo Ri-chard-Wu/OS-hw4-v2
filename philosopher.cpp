@@ -76,26 +76,26 @@ void Philosopher::eat() {
     
     enter();
 
-    pickup();
+    pickup(id);
 
     // col_print((string)"eat", id, COL_WIDTH, PHILOSOPHERS);
 
     sleep(EATTIME);
 
-    putdown();
+    putdown(id);
 
     leave();
 }
 
 
-void Philosopher::pickup() {
+void Philosopher::pickup(int id) {
     // TODO: implement the pickup interface, the philosopher needs to pick up the left fork first, then the right fork
 
     leftFork->wait(id);
     rightFork->wait(id);
 }
 
-void Philosopher::putdown() {
+void Philosopher::putdown(int id) {
     // TODO: implement the putdown interface, the philosopher needs to put down the left fork first, then the right fork
 
     leftFork->signal(id);
