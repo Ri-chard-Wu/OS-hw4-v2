@@ -1,86 +1,73 @@
 #include "fork.hpp"
-#include <cassert>
 #include "config.hpp"
 
 using namespace std;
 
-Fork::Fork(
-#ifdef DEBUG        
-    int id
-#endif
-    ) {
+Fork::Fork(int id) {
     // TODO: implement fork constructor (value, mutex, cond)
-#ifdef DEBUG        
     this->id = id;
-#endif
 
     pthread_mutex_init(&mutex, NULL);
     pthread_cond_init(&cond, NULL);
     value = 1;
 
-#ifdef DEBUG        
+
+    // pthread_mutex_init(&mutex_tk, NULL);
+    tk_serving = 0;
+    n_tk_max = PHILOSOPHERS;
+    tk_next = 0;
+    
     logger.add_meta(ll2str(value));
     logger.add_meta(ll2str(PHILOSOPHERS));       
-#endif
-
 }
 
 
 
-void Fork::wait(
-#ifdef DEBUG        
-    int phr_id
-#endif
-) {
+void Fork::wait(int phr_id) {
     // TODO: implement semaphore wait
-
     pthread_mutex_lock(&mutex);
 
-    while(value == 0) {
-#ifdef DEBUG        
-        logger.add_log(ll2str(phr_id) + ", WAIT_ON_RESOURCE" + ", " + ll2str(value));
-#endif
-        pthread_cond_wait(&cond, &mutex);
+    int tk = draw_tk();
 
+    while(value == 0 || tk != tk_serving) {
+        
+        logger.add_log(ll2str(phr_id) + ", WAIT_ON_RESOURCE" + ", " + ll2str(value));
+
+        pthread_cond_wait(&cond, &mutex);
     };
 
     value--;
-    assert(value >= 0);
-
-#ifdef DEBUG        
+    tk_serving = (tk_serving + 1) % n_tk_max;
+    
     logger.add_log(ll2str(phr_id) + ", ACQUIRED_RESOURCE" + ", " + ll2str(value));
-#endif
+
 
     pthread_mutex_unlock(&mutex);
 }
 
 
-void Fork::signal(
-#ifdef DEBUG        
-    int phr_id
-#endif    
-) {
+
+void Fork::signal(int phr_id) {
     // TODO: implement semaphore signal
     pthread_mutex_lock(&mutex);
     value++;
     
-    pthread_cond_signal(&cond);
+    pthread_cond_broadcast(&cond);
 
-#ifdef DEBUG        
     logger.add_log(ll2str(phr_id) + ", RELEASED_RESOURCE" + ", " + ll2str(value));
-#endif
 
     pthread_mutex_unlock(&mutex);
 }
 
+
+
+
 Fork::~Fork() {
     // TODO: implement fork destructor (mutex, cond)
 
-#ifdef DEBUG        
     char buf[20];
     sprintf(buf, "Fork-%d.log", id);
     logger.write_log(buf);
-#endif
 
     pthread_mutex_destroy(&mutex);
     pthread_cond_destroy(&cond);

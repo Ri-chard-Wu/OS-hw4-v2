@@ -57,52 +57,28 @@ void Philosopher::eat() {
 void Philosopher::pickup(int id) {
     // TODO: implement the pickup interface, the philosopher needs to pick up the left fork first, then the right fork
 
-    leftFork->wait(
-#ifdef DEBUG        
-        id
-#endif
-        );
+    leftFork->wait(id);
 
 
-    rightFork->wait(
-#ifdef DEBUG        
-        id
-#endif
-        );
+    rightFork->wait(id);
 }
 
 void Philosopher::putdown(int id) {
     // TODO: implement the putdown interface, the philosopher needs to put down the left fork first, then the right fork
 
-    leftFork->signal(
-#ifdef DEBUG        
-        id
-#endif
-        );
+    leftFork->signal(id);
         
-    rightFork->signal(
-#ifdef DEBUG        
-        id
-#endif
-        );
+    rightFork->signal(id);
 }
 
 void Philosopher::enter() {
     // TODO: implement the enter interface, the philosopher needs to join the table first
-    table->wait(
-#ifdef DEBUG        
-        id
-#endif
-        );
+    table->wait(id);
 }
 
 void Philosopher::leave() {
     // TODO: implement the leave interface, the philosopher needs to let the table know that he has left
-    table->signal(
-#ifdef DEBUG        
-        id
-#endif
-        );
+    table->signal(id);
 }
 
 

@@ -10,5 +10,5 @@ clean:
 	rm -f $(EXES)
 
 .PHONY: main 
-main: main.cpp fork.cpp table.cpp philosopher.cpp #utils.cpp
+main: main.cpp fork.cpp table.cpp philosopher.cpp utils.cpp
 	g++ $(CXXFLAGS) -o $@ $?

@@ -1,7 +1,7 @@
 
 #!/bin/sh
 
-cd ~/Dining-Philosopher
+cd ~/Dining-Philosopher-bonus
 
 # echo *.png > .gitignore
 # echo ./samples/*.png > .gitignore
